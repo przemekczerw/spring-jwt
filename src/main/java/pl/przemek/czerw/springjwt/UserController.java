@@ -17,7 +17,6 @@ import pl.przemek.czerw.springjwt.models.AuthenticationRequest;
 import pl.przemek.czerw.springjwt.models.AuthenticationResponse;
 import pl.przemek.czerw.springjwt.util.JwtUtil;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -32,25 +31,33 @@ public class UserController {
     @Autowired
     private JwtUtil jwtUtilToken;
 
+    @Autowired
+    UserService userService;
+
+    @RequestMapping("/createUser")
+    public String create(@RequestBody User user) throws Exception {
+       return userService.signup(user);
+    }
+
     @RequestMapping("/hello")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+//    @PreAuthorize("hasAnyRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public String hello() {
         return "Hello World";
     }
 
     @RequestMapping("/helloUser")
-    @PreAuthorize("hasRole('ROLE_USER')")
+//    @PreAuthorize("hasRole('ROLE_USER')")
     public String helloUser() {
         return "Hello user";
     }
 
     @RequestMapping("/helloAdmin")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String helloAdmin() {
         return "Hello admin";
     }
 
-//    @PostMapping("/authenticate")
+    @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest, HttpServletResponse response) throws Exception {
 
         try {

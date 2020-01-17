@@ -40,15 +40,26 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails){
-        Map<String, Object> claims = new HashMap<>();
-        return createToken(claims);
-    }
-
+//    public String generateToken(UserDetails userDetails){
+//        Map<String, Object> claims = new HashMap<>();
+//        return createToken(claims, userDetails.getUsername());
+//    }
+//
+    //TODO NOWE DO SPRAWDZENIA
     public String createToken(String subject, List<Role> roles){
         Claims claims = Jwts.claims().setSubject(subject);
         claims.put("auth", roles.stream().map(s -> new SimpleGrantedAuthority(s.getAuthority())).filter(Objects::nonNull).collect(Collectors.toList()));
 
+        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis())).setExpiration(new Date(System.currentTimeMillis() +1000 * 60 * 60 *10))
+                .signWith(SignatureAlgorithm.HS512, SECRET_KEY).compact();
+    }
+
+    public String generateToken(UserDetails userDetails){
+        Map<String, Object> claims = new HashMap<>();
+        return createToken(claims, userDetails.getUsername());
+    }
+
+    public String createToken(Map<String, Object> claims, String subject){
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis())).setExpiration(new Date(System.currentTimeMillis() +1000 * 60 * 60 *10))
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY).compact();
     }
