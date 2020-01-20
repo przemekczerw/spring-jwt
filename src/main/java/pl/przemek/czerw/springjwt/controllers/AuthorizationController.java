@@ -112,7 +112,6 @@ public class AuthorizationController {
             });
         }
 
-        // Create new user's account
         User user =  User.builder().username(signUpRequest.getUsername())
                 .email(signUpRequest.getEmail())
                 .password(encoder.encode(signUpRequest.getPassword()))
