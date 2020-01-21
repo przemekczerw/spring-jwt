@@ -27,7 +27,8 @@ localhost:8080/api/auth/signin
 }
 
 dokleić do headera Autoryzacje i dodać token
-Baerer token
+
+Bearer token
 
 teraz powinna być 200
 http://localhost:8080/api/test/admin
